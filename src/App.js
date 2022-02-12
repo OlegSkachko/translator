@@ -1,33 +1,30 @@
-
+import React from 'react'
 import { useState } from 'react';
 import './App.css';
 import ToDo from './ToDo'
-import ToDoForm from './ToDoForm'
 
 function App() {
-  const [todos, setTodos] = useState(JSON.parse(localStorage.getItem('todos')) || [])
-  const [Task2, setTask2] = useState([])
-  
+
+const [todos, setTodos] = useState(JSON.parse(localStorage.getItem('todos')) || [])
 const [userInput, setUserInput] = useState('')
 const [userInput2, setUserInput2] = useState('')
+const [area1, setArea1] = useState('')
+const [area2, setArea2] = useState('')
 
   const addTask = (userInput, userInput2) => {
     if(userInput) {
       const newItem = {
-        id: Math.random().toString(36).substr(2,9),
-        task: userInput,
-        task1: userInput2,
+        id: Math.random().toString(36),
+        currentWord: userInput,
+        translatedWord: userInput2,
         complete: false
       }
       let array = [...todos, newItem]
-      localStorage.setItem('todos', JSON.stringify(array) )
+      localStorage.setItem('todos', JSON.stringify(array))
       setTodos(array)
     }
   }
   
-  
-
-
   const removeTask = (id) => {
     setTodos([...todos.filter((todo) => todo.id !== id)])
   }
@@ -41,60 +38,85 @@ const [userInput2, setUserInput2] = useState('')
   }
 
 
-
-
-const [area1, setArea1] = useState('')
-const [area2, setArea2] = useState('')
-
-const [inp1, setInp1] = useState('')
-const [inp2, setInp2] = useState('')
-
-const [translated, setTranslated] = useState([])
-const [words, setWords] = useState([ {
-  name: 'hi',
-  value: 'привет',
-}])
-
-
-
 function translate() {
   let arr = area1.split(' ')
+  if(arr.length > 0 ) {
+    for(let i=0; i<arr.length;i++) {
+      for(let j=0; j<todos.length;j++) {
+        let temporalWord = arr[i]
 
-  for(let i=0; i<arr.length;i++) {
-    for(let j=0; j<todos.length;j++) {
-      if(todos[j].task === arr[i]) {
-        arr[i] =todos[j].task1
+        if(temporalWord.substring(temporalWord.length-3, temporalWord.length) === "...") {
+          let temp = temporalWord.substring(0, temporalWord.length-3)
+
+          if(todos[j].currentWord.toLowerCase() === temp.toLowerCase()) {
+            arr[i] =todos[j].translatedWord.toLowerCase()+"..."
+          }
+          continue
+        }
+
+        if(temporalWord[temporalWord.length -1] === ".") {
+          let temp = temporalWord.substring(0, temporalWord.length-1)
+          if(todos[j].currentWord.toLowerCase() === temp.toLowerCase()) {
+            arr[i] =todos[j].translatedWord.toLowerCase()+"."
+          }
+          continue
+        }
+
+        if(temporalWord[temporalWord.length -1] === ",") {
+          let temp = temporalWord.substring(0, temporalWord.length-1)
+
+          if(todos[j].currentWord.toLowerCase() === temp.toLowerCase()) {
+            arr[i] =todos[j].translatedWord.toLowerCase()+","
+          }
+          continue
+        }
+
+        if(temporalWord[temporalWord.length -1] === "?") {
+          let temp = temporalWord.substring(0, temporalWord.length-1)
+          
+          if(todos[j].currentWord.toLowerCase() === temp.toLowerCase()) {
+            arr[i] =todos[j].translatedWord.toLowerCase()+"?"
+          }
+          continue
+        }
+
+        if(temporalWord[temporalWord.length -1] === "!") {
+          let temp = temporalWord.substring(0, temporalWord.length-1)
+          
+          if(todos[j].currentWord.toLowerCase() === temp.toLowerCase()) {
+            arr[i] =todos[j].translatedWord.toLowerCase()+"!"
+          }
+          continue
+        }
+
+        if(todos[j].currentWord.toLowerCase() === arr[i].toLowerCase()) {
+          arr[i] =todos[j].translatedWord.toLowerCase()
+        }
       }
     }
+    setArea2(arr.join(' '))
   }
-  setArea2(arr.join(' '))
-}
-function add() {
-
 }
 
+  const handleChange = (e) => {
+      setUserInput(e.currentTarget.value)
+  }
+  const handleChange2 = (e) => {
+      setUserInput2(e.currentTarget.value)
+  }
+  
+  const handleSubmit = (e) => {
+      e.preventDefault()
+      addTask(userInput,userInput2)
+      setUserInput("")
+      setUserInput2("")
+  }
 
-
-
-    const handleChange = (e) => {
-        setUserInput(e.currentTarget.value)
-    }
-    const handleChange2 = (e) => {
-        setUserInput2(e.currentTarget.value)
-    }
-    
-    const handleSubmit = (e) => {
-        e.preventDefault()
-        addTask(userInput,userInput2)
-        setUserInput("")
-        setUserInput2("")
-    }
-
-    const handleKeyPress = (e) => {
-        if(e.key === "Enter") {
-            handleSubmit(e)
-        }
-    }
+  const handleKeyPress = (e) => {
+      if(e.key === "Enter") {
+          handleSubmit(e)
+      }
+  }
 
 
 
@@ -112,14 +134,12 @@ function add() {
       <form onSubmit={handleSubmit}>
             <input 
                 value={userInput}
-                type="text"
                 onChange={handleChange}
                 onKeyDown={handleKeyPress}
                 placeholder="Введите слово..."
             />   
              <input 
                 value={userInput2}
-                type="text"
                 onChange={handleChange2}
                 onKeyDown={handleKeyPress}
                 placeholder="Введите перевод..."

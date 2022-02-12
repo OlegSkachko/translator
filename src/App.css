@@ -10,8 +10,8 @@
 }
 
 .text {
-  width: 80vw;
-  height: 20vh;
+  width: 97vw;
+  min-height: 20%;
   border: 2px solid green;
   color: #000;
   font-size: 20px;
@@ -40,23 +40,16 @@ input {
   font-size: 20px;
 }
 
-
-
-
-.App .item-todo {
-display: flex;
-justify-content: space-between;
-align-items: center;
+.item-todo {
+  width: 94vw;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   padding: 14px;
   margin: 0 auto;
   text-align: left;
   margin-top: 15px;
-  background: linear-gradient(
-    90deg,
-    rgba(48, 255, 12,0.3) 0%,
-    rgba(233, 250, 0, 0.3) 100%
-  );
-  color: #000;
+  background:rgba(48, 255, 12,0.3);
   border: 2px solid black;
   font-size: 25px;
   font-weight: bold;
@@ -65,11 +58,11 @@ align-items: center;
 }
 
 
-.App .item-todo .item-delete {
+.item-delete {
   color: red;
   display: flex;
   cursor: pointer;
- margin-left: 15px;
+  margin-left: 15px;
   font-size: 22px;
   position: relative;
   left: -4px;

@@ -5,8 +5,8 @@ function ToDo({ todo, toggleTask, removeTask }) {
                 className={todo.complete ? "item-text strike" : "item-text"}
                 onClick={() => toggleTask(todo.id)}
                 >
-                слово: {todo.task} <br/>
-                перевод: {todo.task1} 
+                слово: {todo.currentWord} <br/>
+                перевод: {todo.translatedWord} 
             </div>
             <div className="item-delete" onClick={() => removeTask(todo.id)}>
                 X
